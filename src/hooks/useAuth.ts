@@ -93,7 +93,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function signOut() {
     setLoading(true);
-    await supabase.auth.signOut();
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+    } catch (err) {
+      // Ensure UI doesn't get stuck in a loading state if Supabase rejects
+      // (e.g. already-expired session). The onAuthStateChange listener will
+      // also clear loading on success, but this guarantees recovery on error.
+      setSession(null);
+      setUser(null);
+      setProfile(null);
+      setLoading(false);
+      throw err;
+    }
   }
 
   return createElement(AuthContext.Provider, { value: { session, user, profile, loading, signOut } }, children);
