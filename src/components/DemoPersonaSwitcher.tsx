@@ -129,7 +129,22 @@ export default function DemoPersonaSwitcher({ className }: { className?: string 
         <DropdownMenuItem
           onSelect={(e) => {
             e.preventDefault();
-            signOut();
+            void (async () => {
+              try {
+                await signOut();
+                toast({
+                  title: "Signed out",
+                  description: "You've been signed out of the demo profile.",
+                });
+                navigate("/", { replace: true });
+              } catch (err) {
+                toast({
+                  title: "Sign out failed",
+                  description: err instanceof Error ? err.message : "Try again in a moment.",
+                  variant: "destructive",
+                });
+              }
+            })();
           }}
           className="cursor-pointer text-text-muted"
         >
