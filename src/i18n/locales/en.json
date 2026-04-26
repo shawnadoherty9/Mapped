@@ -1,0 +1,127 @@
+{
+  "common": {
+    "openDashboard": "Open dashboard",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "createAccount": "Create account",
+    "back": "Back",
+    "menu": "Menu",
+    "close": "Close",
+    "loading": "Loading dashboard…",
+    "language": "Language",
+    "switchLanguage": "Switch language"
+  },
+  "landing": {
+    "tagline": "THE FUTURE OF WORK",
+    "nav": {
+      "about": "About",
+      "how": "How it works",
+      "signUp": "Sign up"
+    },
+    "hero": {
+      "title": "Map the future of work: country by country, skill by skill",
+      "sub": "Personalized insights built using real World Bank data and clear, transparent calculations that can be checked and trusted",
+      "ctaPrimary": "Get started",
+      "ctaSecondary": "Read the methodology",
+      "trustExports": "CSV exports include provenance",
+      "trustSources": "Source-traceable calibration",
+      "trustAudiences": "Built for individuals & policymakers"
+    },
+    "about": {
+      "eyebrow": "About MAPPED",
+      "title": "What can you do with MAPPED?",
+      "sub": "Mapped helps you understand how AI is reshaping jobs across different countries and skill levels. Explore how roles are classified, how exposure is calculated, and how local economic conditions change the impact of automation.",
+      "card1Title": "Calibrated automation risk",
+      "card1Desc": "Global job automation estimates using real country data and show the results as clear risk levels on an interactive map using Frey-Osborne baselines",
+      "card2Title": "Skills, growth & opportunity",
+      "card2Desc": "Five-question aptitude tests mapped to ISCO-08 + ESCO produce a tiered AI-resilience score, a Grow plan of UN SDG community projects and personalized opportunity matches against locally calibrated occupations",
+      "card3Title": "Talent pool for institutions",
+      "card3Desc": "Searchable, anonymized talent pool for ministries and employers, filterable by aptitude tier, ISCO group, and AI-resilience band, with deterministic top-skill rankings exported to CSV",
+      "card4Title": "Live data, auditable exports",
+      "card4Desc": "Leverage World Bank data on jobs and income, with backups when needed, and include full details on where the data comes from and how it's calculated"
+    },
+    "how": {
+      "eyebrow": "How it works",
+      "title": "A reliable calibration pipeline",
+      "sub": "Every calibrated risk number on the platform follows the same four-factor formula. You can audit it row-by-row, including the World Bank source year and indicator code.",
+      "step1Title": "baseline automation risk",
+      "step1Desc": "Frey-Osborne US automation probability for the ISCO major group, employment-weighted",
+      "step2Title": "country adjustment",
+      "step2Desc": "Country structural multiplier reflecting labor-market context",
+      "step3Title": "informal economy adjustment",
+      "step3Desc": "Informal work resists large-scale automation.",
+      "step4Title": "wage adjustment",
+      "step4Desc": "Automation cost-competitiveness.",
+      "formulaLabel": "Calibrated risk",
+      "formula": "= baseline automation risk × country adjustment × informal economy adjustment × wage adjustment"
+    },
+    "evidence": {
+      "title1": "Live World Bank data",
+      "desc1": "Pulls unregistered employment rate (SL.ISV.IFRM.ZS) and GDP per capita data (NY.GDP.PCAP.CD) per country, with explicit fallback when WDI hasn't refreshed.",
+      "title2": "Confidence bands",
+      "desc2": "Each risk shows the [low–high] uncertainty interval, the band thresholds it crosses, and the resulting confidence.",
+      "title3": "Auditable exports",
+      "desc3": "CSV exports include calibration provenance: country, year mode, source years, and live-vs-fallback data"
+    },
+    "audiences": {
+      "eyebrow": "Choose your view",
+      "title": "Two tracks, one platform",
+      "individualsTitle": "For individuals",
+      "individualsBullet1": "Personalized AI-resilience score for your skills",
+      "individualsBullet2": "Concrete next learning step + Grow plan",
+      "individualsBullet3": "Locally calibrated opportunity matches",
+      "individualsCta": "Sign up as an individual",
+      "policyTitle": "For policymakers & employers",
+      "policyBullet1": "Country × ISCO risk heat map with what-if sliders",
+      "policyBullet2": "Searchable anonymized talent pool",
+      "policyBullet3": "Auditable CSV exports with full provenance",
+      "policyCta": "Sign up as an institution"
+    },
+    "footer": {
+      "rights": "World Bank Youth Summit 2026 · Prototype",
+      "linkAbout": "About",
+      "linkHow": "How it works"
+    }
+  },
+  "app": {
+    "groups": {
+      "assess": "Assess",
+      "system": "System",
+      "insights": "Insights",
+      "talentPool": "Talent Pool"
+    },
+    "links": {
+      "profileInput": "Profile Input",
+      "grow": "Grow",
+      "skillsSignal": "Skills Signal",
+      "opportunityMatch": "Opportunity Match",
+      "countryView": "Country View",
+      "policymakerDashboard": "Policymaker Dashboard",
+      "riskHeatMap": "Risk Heat Map",
+      "talentPool": "Talent Pool",
+      "recruit": "Recruit"
+    },
+    "tooltips": {
+      "countryView": "Switch the active country and inspect its calibration inputs: informality rate, GDP per capita, structural multiplier, and source years used across every page."
+    },
+    "sidebar": {
+      "activeCountry": "Active country",
+      "datasetLoaded": "Dataset loaded",
+      "switchCountry": "Switch country",
+      "summit": "World Bank Youth Summit 2026",
+      "prototype": "Prototype"
+    }
+  },
+  "isco": {
+    "1": "Managers",
+    "2": "Professionals",
+    "3": "Technicians and associate professionals",
+    "4": "Clerical support workers",
+    "5": "Service and sales workers",
+    "6": "Skilled agricultural, forestry and fishery workers",
+    "7": "Craft and related trades workers",
+    "8": "Plant and machine operators, and assemblers",
+    "9": "Elementary occupations",
+    "0": "Armed forces occupations"
+  }
+}

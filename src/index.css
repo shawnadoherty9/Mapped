@@ -1,0 +1,161 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* UNMAPPED — light-first, data-dense pro aesthetic (Bloomberg / Notion).
+   All colors HSL. Tight radii, crisp grid lines, restrained accent. */
+
+@layer base {
+  :root {
+    /* Neutral paper palette */
+    --bg: 40 24% 98%;            /* #faf9f6 paper */
+    --surface: 0 0% 100%;        /* pure white cards */
+    --surface2: 40 18% 96%;      /* #f5f4f0 inset / hover */
+    --border: 40 8% 88%;         /* #e2e0dc hairline */
+    --border-strong: 40 6% 78%;  /* #c8c6c1 emphasis */
+    --text: 150 8% 12%;          /* #1c211e ink */
+    --text-muted: 145 5% 42%;    /* #656d68 secondary */
+    --text-subtle: 140 4% 60%;   /* tertiary */
+
+    /* Accents — restrained, analyst-grade */
+    --accent: 150 55% 28%;       /* #1f6b3f forest green */
+    --accent-soft: 145 40% 92%;  /* tinted bg */
+    --warn: 35 85% 45%;          /* #c98715 amber */
+    --warn-soft: 38 80% 92%;
+    --danger: 4 70% 45%;         /* #c43c2a brick */
+    --danger-soft: 6 70% 94%;
+    --teal: 188 55% 32%;         /* #228195 */
+    --teal-soft: 188 50% 93%;
+
+    /* Map to shadcn tokens */
+    --background: var(--bg);
+    --foreground: var(--text);
+
+    --card: var(--surface);
+    --card-foreground: var(--text);
+
+    --popover: var(--surface);
+    --popover-foreground: var(--text);
+
+    --primary: var(--accent);
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: var(--surface2);
+    --secondary-foreground: var(--text);
+
+    --muted: var(--surface2);
+    --muted-foreground: var(--text-muted);
+
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: var(--danger);
+    --destructive-foreground: 0 0% 100%;
+
+    --input: var(--border);
+    --ring: var(--accent);
+
+    --radius: 0.25rem;
+
+    /* Elevation */
+    --shadow-xs: 0 1px 0 0 hsl(var(--border));
+    --shadow-sm: 0 1px 2px 0 hsl(150 8% 12% / 0.04), 0 0 0 1px hsl(var(--border));
+    --shadow-md: 0 4px 12px -2px hsl(150 8% 12% / 0.08), 0 0 0 1px hsl(var(--border));
+    --shadow-lg: 0 16px 40px -12px hsl(150 8% 12% / 0.16), 0 0 0 1px hsl(var(--border));
+  }
+
+  .dark { color-scheme: light; } /* light-first: ignore .dark toggle */
+
+  * { @apply border-border; }
+  html, body, #root { height: 100%; }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', 'DM Sans', system-ui, sans-serif;
+    font-feature-settings: "ss01", "cv11", "tnum";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    letter-spacing: -0.018em;
+    color: hsl(var(--text));
+  }
+  .font-display { font-family: 'Fraunces', Georgia, serif; }
+  .font-mono { font-family: 'JetBrains Mono', 'DM Mono', ui-monospace, monospace; font-feature-settings: "tnum", "zero"; }
+
+  /* Selection */
+  ::selection { background: hsl(var(--accent) / 0.18); color: hsl(var(--text)); }
+
+  /* Scrollbars — thin, neutral */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: hsl(var(--border-strong)); border: 2px solid hsl(var(--bg)); border-radius: 8px; }
+  ::-webkit-scrollbar-thumb:hover { background: hsl(var(--text-muted)); }
+}
+
+@layer components {
+  .surface {
+    @apply bg-[hsl(var(--surface))] border border-[hsl(var(--border))] rounded-md;
+    box-shadow: var(--shadow-xs);
+  }
+  .surface-elevated {
+    @apply bg-[hsl(var(--surface))] border border-[hsl(var(--border))] rounded-md;
+    box-shadow: var(--shadow-sm);
+  }
+  .surface2 {
+    @apply bg-[hsl(var(--surface2))] border border-[hsl(var(--border))] rounded-md;
+  }
+  .label-mono {
+    @apply font-mono text-[10px] uppercase tracking-[0.16em] text-[hsl(var(--text-muted))];
+  }
+  .data-num {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  .num-tabular { font-variant-numeric: tabular-nums; }
+  .pill {
+    @apply inline-flex items-center px-2 py-0.5 rounded-sm text-[11px] font-mono border border-[hsl(var(--border))];
+  }
+  .hairline-top { box-shadow: inset 0 1px 0 0 hsl(var(--border)); }
+  .hairline-bottom { box-shadow: inset 0 -1px 0 0 hsl(var(--border)); }
+
+  /* Focus ring — subtle but visible */
+  .focus-ring {
+    @apply outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent)/0.35)] focus-visible:ring-offset-1 focus-visible:ring-offset-[hsl(var(--bg))];
+  }
+
+  /* Grid bg accent for hero areas */
+  .grid-paper {
+    background-image:
+      linear-gradient(hsl(var(--border) / 0.6) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.6) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+}
+
+@layer utilities {
+  .text-text { color: hsl(var(--text)); }
+  .text-text-muted { color: hsl(var(--text-muted)); }
+  .text-text-subtle { color: hsl(var(--text-subtle)); }
+  .border-strong { border-color: hsl(var(--border-strong)); }
+  .bg-accent-soft { background-color: hsl(var(--accent-soft)); }
+  .bg-warn-soft { background-color: hsl(var(--warn-soft)); }
+  .bg-danger-soft { background-color: hsl(var(--danger-soft)); }
+  .bg-teal-soft { background-color: hsl(var(--teal-soft)); }
+
+  .animate-fade-in { animation: fade-in 0.25s ease-out both; }
+  .animate-slide-up { animation: slide-up 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}

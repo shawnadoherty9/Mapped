@@ -1,0 +1,126 @@
+{
+  "common": {
+    "openDashboard": "Abrir panel",
+    "signIn": "Iniciar sesión",
+    "signOut": "Cerrar sesión",
+    "createAccount": "Crear cuenta",
+    "back": "Atrás",
+    "menu": "Menú",
+    "close": "Cerrar",
+    "loading": "Cargando panel…",
+    "language": "Idioma",
+    "switchLanguage": "Cambiar idioma"
+  },
+  "landing": {
+    "tagline": "EL FUTURO DEL TRABAJO",
+    "nav": {
+      "about": "Acerca de",
+      "how": "Cómo funciona",
+      "signUp": "Registrarse"
+    },
+    "hero": {
+      "title": "Traza tu futuro laboral — país por país, habilidad por habilidad.",
+      "sub": "Puntuaciones personalizadas de resiliencia ante la IA y calibración de nivel político, basadas en datos en vivo del Banco Mundial y una fórmula transparente y auditable.",
+      "ctaPrimary": "Comenzar",
+      "ctaSecondary": "Leer la metodología",
+      "trustExports": "Las exportaciones CSV incluyen procedencia",
+      "trustSources": "Calibración con trazabilidad de fuentes",
+      "trustAudiences": "Hecho para personas y responsables políticos"
+    },
+    "about": {
+      "eyebrow": "Acerca de MAPPED",
+      "title": "¿Qué puedes hacer con MAPPED?",
+      "sub": "Mapped te ayuda a entender cómo la IA está transformando los empleos en diferentes países y niveles de habilidades. Explora cómo se clasifican los roles, cómo se calcula la exposición y cómo las condiciones económicas locales cambian el impacto de la automatización.",
+      "card1Title": "Riesgo de automatización calibrado",
+      "card1Desc": "Líneas base de Frey-Osborne reponderadas por país usando informalidad, PIB per cápita y multiplicadores estructurales — presentadas como bandas bajo / moderado / elevado / alto con intervalos de confianza, navegables en un mapa de calor global y simuladores de hipótesis.",
+      "card2Title": "Habilidades, crecimiento y oportunidades",
+      "card2Desc": "Pruebas de aptitud de cinco preguntas mapeadas a ISCO-08 + ESCO producen una puntuación escalonada de resiliencia ante la IA, un plan Grow de proyectos comunitarios de los ODS de la ONU, y coincidencias de oportunidades personalizadas con ocupaciones calibradas localmente.",
+      "card3Title": "Reserva de talento para instituciones",
+      "card3Desc": "Reserva de talento anonimizada y consultable para ministerios y empleadores — filtrable por nivel de aptitud, grupo ISCO y banda de resiliencia ante la IA, con clasificaciones determinísticas de habilidades principales exportadas a CSV.",
+      "card4Title": "Datos en vivo, exportaciones auditables",
+      "card4Desc": "Extrae indicadores en vivo del Banco Mundial (SL.ISV.IFRM.ZS, NY.GDP.PCAP.CD) con respaldo explícito, e incrusta la procedencia completa de calibración — años fuente, indicadores de datos en vivo o respaldo, y la fórmula — en cada fila CSV."
+    },
+    "how": {
+      "eyebrow": "Cómo funciona",
+      "title": "Un proceso de calibración confiable",
+      "sub": "Cada cifra de riesgo calibrado en la plataforma sigue la misma fórmula de cuatro factores. Puedes auditarla fila por fila, incluyendo el año fuente del Banco Mundial y el código del indicador.",
+      "step1Title": "riesgo base de automatización",
+      "step1Desc": "Probabilidad de automatización en EE. UU. de Frey-Osborne para el grupo ocupacional ISCO, ponderada por empleo",
+      "step2Title": "ajuste por país",
+      "step2Desc": "Multiplicador estructural del país que refleja el contexto del mercado laboral",
+      "step3Title": "ajuste por economía informal",
+      "step3Desc": "El trabajo informal resiste la automatización a gran escala.",
+      "step4Title": "ajuste salarial",
+      "step4Desc": "Competitividad de costos de la automatización.",
+      "formulaLabel": "Riesgo calibrado",
+      "formula": "= riesgo base de automatización × ajuste por país × ajuste por economía informal × ajuste salarial"
+    },
+    "evidence": {
+      "title1": "Datos en vivo del Banco Mundial",
+      "desc1": "Extrae la tasa de empleo no registrado (SL.ISV.IFRM.ZS) y datos de PIB per cápita (NY.GDP.PCAP.CD) por país, con respaldo explícito cuando WDI no se ha actualizado.",
+      "title2": "Bandas de confianza",
+      "desc2": "Cada riesgo muestra el intervalo de incertidumbre [bajo–alto], los umbrales de banda que cruza y la confianza resultante.",
+      "title3": "Exportaciones auditables",
+      "desc3": "Las exportaciones CSV incluyen procedencia de calibración: país, modo de año, años fuente y datos en vivo o de respaldo"
+    },
+    "audiences": {
+      "eyebrow": "Elige tu vista",
+      "title": "Dos pistas, una plataforma",
+      "individualsTitle": "Para individuos",
+      "individualsBullet1": "Puntuación personalizada de resiliencia ante la IA para tus habilidades",
+      "individualsBullet2": "Próximo paso de aprendizaje concreto + plan Grow",
+      "individualsBullet3": "Coincidencias de oportunidades calibradas localmente",
+      "individualsCta": "Registrarse como persona",
+      "policyTitle": "Para responsables políticos y empleadores",
+      "policyBullet1": "Mapa de calor de riesgo país × ISCO con simuladores de hipótesis",
+      "policyBullet2": "Reserva de talento anonimizada y consultable",
+      "policyBullet3": "Exportaciones CSV auditables con procedencia completa",
+      "policyCta": "Registrarse como institución"
+    },
+    "footer": {
+      "rights": "Cumbre Juvenil del Banco Mundial 2026 · Prototipo",
+      "linkAbout": "Acerca de",
+      "linkHow": "Cómo funciona"
+    }
+  },
+  "app": {
+    "groups": {
+      "assess": "Evaluar",
+      "system": "Sistema",
+      "insights": "Análisis",
+      "talentPool": "Reserva de talento"
+    },
+    "links": {
+      "profileInput": "Datos del perfil",
+      "grow": "Crecer",
+      "skillsSignal": "Señal de habilidades",
+      "opportunityMatch": "Coincidencia de oportunidades",
+      "countryView": "Vista del país",
+      "policymakerDashboard": "Panel de políticas",
+      "riskHeatMap": "Mapa de calor de riesgo",
+      "talentPool": "Reserva de talento"
+    },
+    "tooltips": {
+      "countryView": "Cambia el país activo e inspecciona sus entradas de calibración — tasa de informalidad, PIB per cápita, multiplicador estructural y años fuente usados en cada página."
+    },
+    "sidebar": {
+      "activeCountry": "País activo",
+      "datasetLoaded": "Conjunto de datos cargado",
+      "switchCountry": "Cambiar país",
+      "summit": "Cumbre Juvenil del Banco Mundial 2026",
+      "prototype": "Prototipo"
+    }
+  },
+  "isco": {
+    "1": "Directores y gerentes",
+    "2": "Profesionales científicos e intelectuales",
+    "3": "Técnicos y profesionales de nivel medio",
+    "4": "Personal de apoyo administrativo",
+    "5": "Trabajadores de servicios y vendedores",
+    "6": "Trabajadores agropecuarios, forestales y pesqueros calificados",
+    "7": "Oficiales, operarios y artesanos",
+    "8": "Operadores de instalaciones, máquinas y ensambladores",
+    "9": "Ocupaciones elementales",
+    "0": "Ocupaciones militares"
+  }
+}
