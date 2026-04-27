@@ -303,6 +303,14 @@ function DemoPersonaList({ personas }: { personas: DemoPersona[] }) {
       });
       if (signInErr) throw signInErr;
       setCountry(persona.country);
+      const dashboardLabel =
+        persona.track === "policymaker"
+          ? "Policymaker dashboard"
+          : "Job seeker dashboard";
+      toast({
+        title: `Entering ${dashboardLabel}`,
+        description: `Signed in as ${persona.displayName}.`,
+      });
       navigate(destinationFor(persona.track), { replace: true });
     } catch (e) {
       toast({
