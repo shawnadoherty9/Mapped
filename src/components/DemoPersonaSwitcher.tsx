@@ -28,6 +28,7 @@ export default function DemoPersonaSwitcher({ className }: { className?: string 
   const { toast } = useToast();
   const setCountry = useAppStore((s) => s.setCountry);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [signingOut, setSigningOut] = useState(false);
 
   const currentPersona = getPersonaByEmail(user?.email);
   if (!currentPersona) return null;
@@ -129,7 +130,9 @@ export default function DemoPersonaSwitcher({ className }: { className?: string 
         <DropdownMenuItem
           onSelect={(e) => {
             e.preventDefault();
+            if (signingOut) return;
             void (async () => {
+              setSigningOut(true);
               try {
                 await signOut();
                 toast({
@@ -143,13 +146,22 @@ export default function DemoPersonaSwitcher({ className }: { className?: string 
                   description: err instanceof Error ? err.message : "Try again in a moment.",
                   variant: "destructive",
                 });
+              } finally {
+                setSigningOut(false);
               }
             })();
           }}
+          disabled={signingOut}
           className="cursor-pointer text-text-muted"
         >
-          <LogOut size={12} className="mr-2" />
-          <span className="text-xs">Sign out of demo</span>
+          {signingOut ? (
+            <Loader2 size={12} className="mr-2 animate-spin" />
+          ) : (
+            <LogOut size={12} className="mr-2" />
+          )}
+          <span className="text-xs">
+            {signingOut ? "Signing out…" : "Sign out of demo"}
+          </span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
