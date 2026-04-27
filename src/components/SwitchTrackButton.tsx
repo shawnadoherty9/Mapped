@@ -4,6 +4,7 @@ import { ArrowLeftRight, Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { getPersonaByEmail } from "@/lib/demoPersonas";
+import { setLastTrack } from "@/lib/lastTrack";
 import { cn } from "@/lib/utils";
 
 /**
@@ -32,6 +33,10 @@ export default function SwitchTrackButton({ className }: { className?: string })
   async function handleSwitch() {
     setBusy(true);
     try {
+      // Pre-set the persisted track to the destination so /auth's auto-jump
+      // sends them straight to the right demo login after sign-out.
+      const nextTrack = currentTrack === "policymaker" ? "individual" : "policymaker";
+      setLastTrack(nextTrack);
       await signOut();
       toast({
         title: "Switching track",
