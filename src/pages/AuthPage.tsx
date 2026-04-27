@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Briefcase, Building2, Loader2, ChevronRight } from "lucide-react";
+import { ArrowLeft, Briefcase, Building2, Loader2, ChevronRight, LogOut } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth, type AccountRole } from "@/hooks/useAuth";
@@ -51,25 +51,29 @@ function AuthShell({ children }: { children: React.ReactNode }) {
  *  `expectedTrack` constrains the redirect to a specific track — when set, we
  *  only auto-route if the loaded profile matches that track. This prevents a
  *  user who is already signed in as (e.g.) a job-seeker from being bounced
- *  away when they intentionally visit /auth/employer to switch tracks. */
+ *  away when they intentionally visit /auth/employer to switch tracks.
+ *
+ *  When `expectedTrack` is omitted (the picker page), we do NOT auto-redirect
+ *  signed-in users. The picker is the one place a user must be able to switch
+ *  tracks, so bouncing them straight back to their current dashboard would
+ *  trap them. The picker UI surfaces a "Switch account" affordance instead. */
 function useRedirectAfterAuth(expectedTrack?: DemoTrack) {
   const navigate = useNavigate();
   const { session, user, profile, loading } = useAuth();
   useEffect(() => {
     if (loading || !session || !user) return;
+    // Picker page: never auto-redirect, let the user choose.
+    if (!expectedTrack) return;
     if (profile && profile.user_id === user.id) {
-      // If the caller pinned a track and the current profile is on a different
-      // track, do not redirect — let the user pick a persona on this page.
-      if (expectedTrack && profile.role !== expectedTrack) return;
+      // If the current profile is on a different track, do not redirect —
+      // let the user pick a persona on this page (they are intentionally
+      // switching tracks).
+      if (profile.role !== expectedTrack) return;
       navigate(destinationFor(profile.role), { replace: true });
       return;
     }
-    if (expectedTrack) return; // wait for persona click; don't fall back
-    // Profile not loaded yet — give the trigger ~1.2s, then route to default.
-    const t = setTimeout(() => {
-      navigate(destinationFor(null), { replace: true });
-    }, 1200);
-    return () => clearTimeout(t);
+    // Profile hasn't loaded yet on a track-specific page — wait for the
+    // persona click; do not fall back to a default that might be wrong.
   }, [loading, session, user, profile, navigate, expectedTrack]);
 }
 
@@ -78,6 +82,32 @@ function useRedirectAfterAuth(expectedTrack?: DemoTrack) {
 // ============================================================================
 export default function AuthPage() {
   useRedirectAfterAuth();
+  const { user, profile, signOut } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const [signingOut, setSigningOut] = useState(false);
+
+  const currentRoleLabel =
+    profile?.role === "policymaker" ? "Policymaker / employer" : "Job seeker";
+
+  async function handleSwitchAccount() {
+    setSigningOut(true);
+    try {
+      await signOut();
+      toast({
+        title: "Signed out",
+        description: "Pick a track to sign in to a different dashboard.",
+      });
+    } catch (e) {
+      toast({
+        title: "Sign out failed",
+        description: e instanceof Error ? e.message : "Try again in a moment.",
+        variant: "destructive",
+      });
+    } finally {
+      setSigningOut(false);
+    }
+  }
 
   const tracks: Array<{
     track: DemoTrack;
@@ -107,6 +137,49 @@ export default function AuthPage() {
       <div className="surface-elevated p-6">
         <div className="label-mono mb-2">Continue as</div>
         <h1 className="font-display text-2xl text-text mb-6">Choose your track</h1>
+        {user && (
+          <div className="mb-5 rounded-sm border border-border bg-surface px-3 py-2.5 flex items-start gap-3">
+            <div className="min-w-0 flex-1">
+              <div className="text-[11px] font-mono text-text-muted">
+                Currently signed in as
+              </div>
+              <div className="text-sm text-text truncate">
+                {currentRoleLabel}
+                {user.email ? (
+                  <span className="text-text-muted"> · {user.email}</span>
+                ) : null}
+              </div>
+              <div className="text-[11px] text-text-muted mt-1 leading-snug">
+                Sign out below to switch into the other dashboard, or jump back
+                to your current one.
+              </div>
+            </div>
+            <div className="flex flex-col gap-1.5 shrink-0">
+              <button
+                type="button"
+                onClick={() =>
+                  navigate(destinationFor(profile?.role), { replace: true })
+                }
+                className="text-[11px] font-mono text-brand hover:underline"
+              >
+                Go to dashboard
+              </button>
+              <button
+                type="button"
+                onClick={handleSwitchAccount}
+                disabled={signingOut}
+                className="inline-flex items-center gap-1 text-[11px] font-mono text-text-muted hover:text-text disabled:opacity-60"
+              >
+                {signingOut ? (
+                  <Loader2 size={11} className="animate-spin" />
+                ) : (
+                  <LogOut size={11} />
+                )}
+                {signingOut ? "Signing out…" : "Sign out"}
+              </button>
+            </div>
+          </div>
+        )}
         <div className="grid gap-3">
           {tracks.map((t) => {
             const Icon = t.icon;
@@ -210,6 +283,14 @@ function DemoPersonaList({ personas }: { personas: DemoPersona[] }) {
   async function signInAs(persona: DemoPersona) {
     setBusyId(persona.id);
     try {
+      // If a different session is already active (e.g. user is switching from
+      // the job-seeker dashboard into the policymaker one), sign it out first
+      // so the auth listener fires cleanly and stale profile state can't leak
+      // into the new dashboard.
+      const { data: existing } = await supabase.auth.getSession();
+      if (existing.session) {
+        await supabase.auth.signOut();
+      }
       const { data, error } = await supabase.functions.invoke("ensure-demo-user", {
         body: { personaId: persona.id },
       });
