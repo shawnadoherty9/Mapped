@@ -11,6 +11,7 @@ import {
   type DemoPersona,
   type DemoTrack,
 } from "@/lib/demoPersonas";
+import { getLastTrack, setLastTrack } from "@/lib/lastTrack";
 
 function destinationFor(role: AccountRole | DemoTrack | null | undefined): string {
   // Policymakers land on the country dashboard; job seekers land on Skills Signal
@@ -69,6 +70,9 @@ function useRedirectAfterAuth(expectedTrack?: DemoTrack) {
       // let the user pick a persona on this page (they are intentionally
       // switching tracks).
       if (profile.role !== expectedTrack) return;
+      // Remember the track they just landed on so future sign-ins skip the
+      // picker and route straight back here.
+      setLastTrack(profile.role);
       navigate(destinationFor(profile.role), { replace: true });
       return;
     }
@@ -86,6 +90,17 @@ export default function AuthPage() {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [signingOut, setSigningOut] = useState(false);
+
+  // If the user is signed out but previously chose a track on this device,
+  // jump them to that track's demo login page so they don't have to re-pick.
+  // Only do this when there is no active session — when signed in, we still
+  // want the picker to surface the "switch account" affordance.
+  useEffect(() => {
+    if (user) return;
+    const last = getLastTrack();
+    if (last === "policymaker") navigate("/auth/employer", { replace: true });
+    else if (last === "individual") navigate("/auth/job-seeker", { replace: true });
+  }, [user, navigate]);
 
   const currentRoleLabel =
     profile?.role === "policymaker" ? "Policymaker / employer" : "Job seeker";
@@ -303,6 +318,9 @@ function DemoPersonaList({ personas }: { personas: DemoPersona[] }) {
       });
       if (signInErr) throw signInErr;
       setCountry(persona.country);
+      // Persist this track so subsequent sign-ins land directly on the same
+      // dashboard without bouncing through the picker.
+      setLastTrack(persona.track);
       const dashboardLabel =
         persona.track === "policymaker"
           ? "Policymaker dashboard"
