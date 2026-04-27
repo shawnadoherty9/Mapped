@@ -6,6 +6,17 @@ import { useToast } from "@/hooks/use-toast";
 import { getPersonaByEmail } from "@/lib/demoPersonas";
 import { setLastTrack } from "@/lib/lastTrack";
 import { cn } from "@/lib/utils";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 /**
  * Visible on every dashboard page. Signs the user out (same flow as the
@@ -19,6 +30,7 @@ export default function SwitchTrackButton({ className }: { className?: string })
   const navigate = useNavigate();
   const { toast } = useToast();
   const [busy, setBusy] = useState(false);
+  const [open, setOpen] = useState(false);
 
   if (!user) return null;
 
@@ -50,29 +62,67 @@ export default function SwitchTrackButton({ className }: { className?: string })
         variant: "destructive",
       });
       setBusy(false);
+    } finally {
+      // Close the dialog regardless of outcome. On success the route changes
+      // and the component unmounts; on failure we re-enable the button.
+      setOpen(false);
     }
   }
 
   return (
-    <button
-      type="button"
-      onClick={handleSwitch}
-      disabled={busy}
-      className={cn(
-        "inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-sm border border-border bg-surface text-xs font-mono text-text-muted hover:text-text hover:border-strong transition-colors disabled:opacity-60",
-        className,
-      )}
-      aria-label={`Switch to ${otherLabel} track`}
-    >
-      {busy ? (
-        <Loader2 size={12} className="animate-spin" />
-      ) : (
-        <ArrowLeftRight size={12} />
-      )}
-      <span className="hidden sm:inline">
-        {busy ? "Switching…" : `Switch to ${otherLabel}`}
-      </span>
-      <span className="sm:hidden">{busy ? "…" : "Switch"}</span>
-    </button>
+    <AlertDialog open={open} onOpenChange={(v) => !busy && setOpen(v)}>
+      <AlertDialogTrigger asChild>
+        <button
+          type="button"
+          disabled={busy}
+          className={cn(
+            "inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-sm border border-border bg-surface text-xs font-mono text-text-muted hover:text-text hover:border-strong transition-colors disabled:opacity-60",
+            className,
+          )}
+          aria-label={`Switch to ${otherLabel} track`}
+        >
+          {busy ? (
+            <Loader2 size={12} className="animate-spin" />
+          ) : (
+            <ArrowLeftRight size={12} />
+          )}
+          <span className="hidden sm:inline">
+            {busy ? "Switching…" : `Switch to ${otherLabel}`}
+          </span>
+          <span className="sm:hidden">{busy ? "…" : "Switch"}</span>
+        </button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Switch to {otherLabel} dashboard?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This signs you out of the current session and sends you back to the
+            sign-in picker so you can pick a {otherLabel} profile. Any unsaved
+            in-page state will be cleared.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel disabled={busy}>Stay here</AlertDialogCancel>
+          <AlertDialogAction
+            disabled={busy}
+            onClick={(e) => {
+              // Keep the dialog open while the async sign-out runs; we close
+              // it ourselves in the finally block above.
+              e.preventDefault();
+              void handleSwitch();
+            }}
+          >
+            {busy ? (
+              <>
+                <Loader2 size={12} className="animate-spin mr-1.5" />
+                Switching…
+              </>
+            ) : (
+              `Switch to ${otherLabel}`
+            )}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
