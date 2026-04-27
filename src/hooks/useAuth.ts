@@ -1,6 +1,7 @@
 import { createContext, createElement, useCallback, useContext, useEffect, useRef, useState } from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { useAppStore } from "@/store/useAppStore";
 
 export type AccountRole = "individual" | "policymaker";
 
@@ -96,6 +97,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
+      // Clear in-memory demo/dashboard state so signing out always returns
+      // to a clean slate (no lingering profile, assessments, or mapped-at
+      // timestamp from the previous session).
+      const store = useAppStore.getState();
+      store.setActiveProfile(null);
+      store.setMappedAt(null);
+      store.clearAssessments();
     } catch (err) {
       // Ensure UI doesn't get stuck in a loading state if Supabase rejects
       // (e.g. already-expired session). The onAuthStateChange listener will
