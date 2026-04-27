@@ -6,6 +6,7 @@ import { CountryKey, countryConfigs, countryKeys } from "@/data/countryConfigs";
 import { User, Activity, ShieldAlert, Target, LineChart, Building2, Settings, Grid3x3, ChevronDown, Sprout, Check, ArrowLeft, Users, Menu, X, Briefcase } from "lucide-react";
 import DemoPersonaSwitcher from "@/components/DemoPersonaSwitcher";
 import UserMenu from "@/components/UserMenu";
+import SwitchTrackButton from "@/components/SwitchTrackButton";
 import { useAuth } from "@/hooks/useAuth";
 import { getPersonaByEmail, type DemoTrack } from "@/lib/demoPersonas";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -385,6 +386,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
             <span aria-hidden="true" />
           )}
           <div className="flex justify-end gap-2">
+            <SwitchTrackButton />
             <DemoPersonaSwitcher />
             <UserMenu />
           </div>
