@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import LandingPage from "./pages/LandingPage";
 import AuthPage, { JobSeekerAuthPage, EmployerAuthPage } from "./pages/AuthPage";
 import RequireAuth from "./components/RequireAuth";
+import RequireTrack from "./components/RequireTrack";
 import ProfileInputPage from "./pages/ProfileInputPage";
 import SkillsSignalPage from "./pages/SkillsSignalPage";
 import RiskLensPage from "./pages/RiskLensPage";
@@ -43,18 +44,18 @@ const App = () => (
 
           {/* App — requires sign-in */}
           <Route path="/app" element={<RequireAuth><Navigate to="/app/risk" replace /></RequireAuth>} />
-          <Route path="/app/profile" element={<RequireAuth><ProfileInputPage /></RequireAuth>} />
-          <Route path="/app/skills" element={<RequireAuth><SkillsSignalPage /></RequireAuth>} />
+          <Route path="/app/profile" element={<RequireAuth><RequireTrack allow="individual"><ProfileInputPage /></RequireTrack></RequireAuth>} />
+          <Route path="/app/skills" element={<RequireAuth><RequireTrack allow="individual"><SkillsSignalPage /></RequireTrack></RequireAuth>} />
           <Route path="/app/risk" element={<RequireAuth><RiskLensPage /></RequireAuth>} />
-          <Route path="/app/match" element={<RequireAuth><OpportunityMatchPage /></RequireAuth>} />
-          <Route path="/app/youth" element={<RequireAuth><YouthDashboardPage /></RequireAuth>} />
-          <Route path="/app/policy" element={<RequireAuth><PolicymakerDashboardPage /></RequireAuth>} />
+          <Route path="/app/match" element={<RequireAuth><RequireTrack allow="individual"><OpportunityMatchPage /></RequireTrack></RequireAuth>} />
+          <Route path="/app/youth" element={<RequireAuth><RequireTrack allow="individual"><YouthDashboardPage /></RequireTrack></RequireAuth>} />
+          <Route path="/app/policy" element={<RequireAuth><RequireTrack allow="policymaker"><PolicymakerDashboardPage /></RequireTrack></RequireAuth>} />
           <Route path="/app/config" element={<RequireAuth><CountryConfigPage /></RequireAuth>} />
-          <Route path="/app/heatmap" element={<RequireAuth><HeatmapPage /></RequireAuth>} />
-          <Route path="/app/talent" element={<RequireAuth><TalentPoolPage /></RequireAuth>} />
-          <Route path="/app/recruit" element={<RequireAuth><RecruitPage /></RequireAuth>} />
+          <Route path="/app/heatmap" element={<RequireAuth><RequireTrack allow="policymaker"><HeatmapPage /></RequireTrack></RequireAuth>} />
+          <Route path="/app/talent" element={<RequireAuth><RequireTrack allow="policymaker"><TalentPoolPage /></RequireTrack></RequireAuth>} />
+          <Route path="/app/recruit" element={<RequireAuth><RequireTrack allow="policymaker"><RecruitPage /></RequireTrack></RequireAuth>} />
           <Route path="/talent" element={<Navigate to="/app/talent" replace />} />
-          <Route path="/app/grow" element={<RequireAuth><GrowPage /></RequireAuth>} />
+          <Route path="/app/grow" element={<RequireAuth><RequireTrack allow="individual"><GrowPage /></RequireTrack></RequireAuth>} />
 
           {/* Back-compat: forward old top-level routes to /app/* so existing
               bookmarks and in-app links keep working without changing every page. */}
